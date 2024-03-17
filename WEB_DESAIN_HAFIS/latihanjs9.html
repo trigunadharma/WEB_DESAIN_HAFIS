@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>latihan DOM</title>
+</head>
+<body>
+
+    <h1 id="isi"></h1>
+    <p id="warna">Warna biru</p>
+    <script>
+        alert('hallo')
+        document.getElementById("isi").innerHTML = "hy programer";
+
+        let div = document.createElement('div');
+        div.id = 'content';
+        div.innerHTML = '<p>contoh menambahkan element</p>';
+        document.body.appendChild(div);
+        //pewarnaan atau mengganti atribut 
+        document.getElementById("warna").style.color = "blue";
+    </script>
+    <script>
+        function salam (nama) {
+            document.write('apa kabar muhammad hafis ? <br>');
+        }
+        let siswa = "Hafis";
+        salam (siswa);
+    </script>
+</body>
+</html>
