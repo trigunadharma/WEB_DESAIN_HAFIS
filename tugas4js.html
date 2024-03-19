@@ -1,0 +1,115 @@
+</style>
+</head>
+<body>
+
+<form id="pegawaiForm">
+<label for="nama">Nama Pegawai:</label>
+<input type="text" id="nama" name="nama" required><br><br>
+
+<label for="jabatan">Jabatan:</label>
+<select id="jabatan" name="jabatan" required>
+<option value="Manager">Manager</option>
+<option value="Asisten Manager">Asisten Manager</option>
+<option value="Staff">Staff</option>
+</select><br><br>
+
+<label for="status">Status:</label>
+<select id="status" name="status" required>
+<option value="Menikah">Menikah</option>
+<option value="Single">Single</option>
+</select><br><br>
+
+<button type="submit">Tambah Pegawai</button>
+</form>
+
+<table id="pegawaiTable">
+<thead>
+<tr>
+    <th>Nama Pegawai</th>
+    <th>Jabatan</th>
+    <th>Status</th>
+    <th>Gaji Pokok</th>
+    <th>Tunjangan Jabatan</th>
+    <th>BPJS</th>
+    <th>Tunjangan Keluarga</th>
+    <th>Total Gaji</th>
+</tr>
+</thead>
+<tbody>
+<!-- Data Pegawai Akan Ditampilkan Disini -->
+</tbody>
+<tfoot>
+<tr>
+    <td colspan="7">Total Gaji</td>
+    <td id="totalGaji">0</td>
+</tr>
+</tfoot>
+</table>
+
+<script>
+document.getElementById("pegawaiForm").addEventListener("submit", function(event) {
+event.preventDefault();
+
+var nama = document.getElementById("nama").value;
+var jabatan = document.getElementById("jabatan").value;
+var status = document.getElementById("status").value;
+var gajiPokok = calculateGajiPokok(jabatan);
+var tunjanganJabatan = gajiPokok * 0.15;
+var bpjs = gajiPokok * 0.10;
+var tunjanganKeluarga = (status === "Menikah") ? (gajiPokok * 0.20) : 0;
+var totalGaji = gajiPokok + tunjanganJabatan - bpjs + tunjanganKeluarga;
+
+var table = document.getElementById("pegawaiTable").getElementsByTagName('tbody')[0];
+var newRow = table.insertRow(-1);
+var cells = [
+    newRow.insertCell(0),
+    newRow.insertCell(1),
+    newRow.insertCell(2),
+    newRow.insertCell(3),
+    newRow.insertCell(4),
+    newRow.insertCell(5),
+    newRow.insertCell(6),
+    newRow.insertCell(7)
+];
+
+cells[0].innerHTML = nama;
+cells[1].innerHTML = jabatan;
+cells[2].innerHTML = status;
+cells[3].innerHTML = formatCurrency(gajiPokok);
+cells[4].innerHTML = formatCurrency(tunjanganJabatan);
+cells[5].innerHTML = formatCurrency(bpjs);
+cells[6].innerHTML = formatCurrency(tunjanganKeluarga);
+cells[7].innerHTML = formatCurrency(totalGaji);
+
+updateTotalGaji();
+});
+
+function calculateGajiPokok(jabatan) {
+switch (jabatan) {
+    case "Manager":
+        return 15000000;
+    case "Asisten Manager":
+        return 10000000;
+    case "Staff":
+        return 5000000;
+    default:
+        return 0;
+}
+}
+
+function formatCurrency(amount) {
+return "Rp " + amount.toLocaleString(undefined, {minimumFractionDigits: 0});
+}
+
+function updateTotalGaji() {
+var totalGaji = 0;
+var table = document.getElementById("pegawaiTable").getElementsByTagName('tbody')[0];
+for (var i = 0; i < table.rows.length; i++) {
+    totalGaji += parseFloat(table.rows[i].cells[7].innerHTML.replace(/\D/g,''));
+}
+document.getElementById("totalGaji").innerHTML = formatCurrency(totalGaji);
+}
+</script>
+
+</body>
+</html>
